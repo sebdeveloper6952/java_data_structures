@@ -34,11 +34,19 @@ public class BinarySearchTree<K extends Comparable<K>,V>
     {
        return size;
     }
-
-    public void put(K key, V value)
+    
+    /**
+     * Add provided key-value pair to tree. If key was already present, it
+     * updates the value associated with it.
+     * @param key
+     * @param value
+     * @return Old value associated with key, or null if key was not in tree.
+     */
+    public V put(K key, V value)
     {
         // create new entry to be inserted
         Entry<K,V> e = new SEntry(key, value);
+        V old = null;
         if (root.isEmpty())
         {
             root = new BinaryTree<>(e);
@@ -48,6 +56,7 @@ public class BinarySearchTree<K extends Comparable<K>,V>
         {
           // find node where provided key should go
           BinaryTree<Entry<K,V>> foundNode = findNode(key, root);
+          old = foundNode.value().getValue();
           // key already in tree, update value
           if(!foundNode.isEmpty()) foundNode.setValue(e);
           else
@@ -60,7 +69,8 @@ public class BinarySearchTree<K extends Comparable<K>,V>
                   foundNode.setRight(new BinaryTree<>());
               size++;
           }
-        }  
+        }
+        return old;
     }
     
     /**
