@@ -86,4 +86,30 @@ public class BinaryTree<E>
     {
         return value == null;
     }
+    
+    protected void rotateRight()
+    {
+        BinaryTree<E> newRoot = left();
+        setLeft(newRoot.right());
+        newRoot.setRight(this);
+        if(parent != null)
+        {
+            if(isLeftChild()) parent.setLeft(newRoot);
+            else parent.setRight(newRoot);
+        }
+        else newRoot.setParent(null);
+    }
+    
+    protected void rotateLeft()
+    {
+        BinaryTree<E> newRoot = right();
+        setRight(newRoot.left());
+        newRoot.setLeft(this);
+        if(parent != null)
+        {
+            if(isLeftChild()) parent.setLeft(newRoot);
+            else parent.setRight(newRoot);
+        }
+        else newRoot.setParent(null);
+    }
 }
