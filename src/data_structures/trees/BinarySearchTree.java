@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 public class BinarySearchTree<K extends Comparable<K>,V>
 {
     protected BinaryTree<Entry<K,V>> root;
+    protected BinaryTree<Entry<K,V>> actionNode;
     protected int size;
     
     public BinarySearchTree()
@@ -50,12 +51,14 @@ public class BinarySearchTree<K extends Comparable<K>,V>
         if (root.isEmpty())
         {
             root = new BinaryTree<>(e);
+            actionNode = root;
             size++;
         }
         else
         {
           // find node where provided key should go
           BinaryTree<Entry<K,V>> foundNode = findNode(key, root);
+          actionNode = foundNode;
           old = foundNode.value().getValue();
           // key already in tree, update value
           if(!foundNode.isEmpty()) foundNode.setValue(e);
@@ -93,6 +96,7 @@ public class BinarySearchTree<K extends Comparable<K>,V>
         if(key == null || root.isEmpty()) return null;
         BinaryTree<Entry<K,V>> node = findNode(key, root);
         if(node.isEmpty()) return null;
+        actionNode = node;
         return node.value().getValue();
     }
 
@@ -104,9 +108,11 @@ public class BinarySearchTree<K extends Comparable<K>,V>
      */
     public V remove(K key) 
     {
+        if(key == null) return null;
         BinaryTree<Entry<K,V>> foundNode = findNode(key, root);
         // key is not in tree
         if(foundNode.isEmpty()) return null;
+        actionNode = foundNode.parent();
         V temp = foundNode.value().getValue();
         // handle removing the last node
         if(size == 1)
