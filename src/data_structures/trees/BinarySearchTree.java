@@ -58,10 +58,14 @@ public class BinarySearchTree<K extends Comparable<K>,V>
         {
           // find node where provided key should go
           BinaryTree<Entry<K,V>> foundNode = findNode(key, root);
+          // save found node as action-node for use in other algorithms
           actionNode = foundNode;
-          old = foundNode.value().getValue();
           // key already in tree, update value
-          if(!foundNode.isEmpty()) foundNode.setValue(e);
+          if(!foundNode.isEmpty())
+          {
+              old = foundNode.value().getValue();
+              foundNode.setValue(e);
+          }
           else
           {
               foundNode.setValue(e);
@@ -112,7 +116,6 @@ public class BinarySearchTree<K extends Comparable<K>,V>
         BinaryTree<Entry<K,V>> foundNode = findNode(key, root);
         // key is not in tree
         if(foundNode.isEmpty()) return null;
-        actionNode = foundNode.parent();
         V temp = foundNode.value().getValue();
         // handle removing the last node
         if(size == 1)
@@ -135,6 +138,8 @@ public class BinarySearchTree<K extends Comparable<K>,V>
                 foundNode.setValue(rep.value());
                 // remove external node that is left child of replacement node
                 removeExternal(rep.left());
+                // update action-node to point to foundNode parent
+                actionNode = foundNode.parent();
             }
         }
         size--;

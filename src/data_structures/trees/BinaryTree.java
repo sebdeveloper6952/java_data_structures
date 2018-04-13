@@ -129,7 +129,6 @@ public class BinaryTree<E>
             else tempParent.setRight(newRoot);
         }
         else newRoot.setParent(null);
-
         return newRoot;
     }
 }
