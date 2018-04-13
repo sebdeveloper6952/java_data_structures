@@ -87,29 +87,49 @@ public class BinaryTree<E>
         return value == null;
     }
     
-    protected void rotateRight()
+    /**
+     * Rotates right over this node.
+     * pre: this node has a left child.
+     * post: This node is one level lower. Left child is one level higher.
+     * @return The new root.
+     */
+    protected BinaryTree<E> rotateRight()
     {
         BinaryTree<E> newRoot = left();
+        if(newRoot == null) return this;
+        BinaryTree<E> tempParent = this.parent();
+        boolean isLeft = this.isLeftChild();
         setLeft(newRoot.right());
         newRoot.setRight(this);
-        if(parent != null)
+        if(tempParent != null)
         {
-            if(isLeftChild()) parent.setLeft(newRoot);
-            else parent.setRight(newRoot);
+            if(isLeft) tempParent.setLeft(newRoot);
+            else tempParent.setRight(newRoot);
         }
         else newRoot.setParent(null);
+        return newRoot;
     }
-    
-    protected void rotateLeft()
+    /**
+     * Rotates left over this node.
+     * pre: this node has a right child.
+     * post: This node is one level lower. Right child is one level higher.
+     * @return The new root.
+     */
+    protected BinaryTree<E> rotateLeft()
     {
-        BinaryTree<E> newRoot = right();
+        BinaryTree<E> newRoot = this.right();
+        if(newRoot == null) return this;
+        BinaryTree<E> tempParent = this.parent();
+        boolean isLeft = this.isLeftChild();
         setRight(newRoot.left());
         newRoot.setLeft(this);
-        if(parent != null)
+        if(tempParent != null)
         {
-            if(isLeftChild()) parent.setLeft(newRoot);
-            else parent.setRight(newRoot);
+            if(isLeft) tempParent.setLeft(newRoot);
+            else tempParent.setRight(newRoot);
         }
         else newRoot.setParent(null);
+
+        return newRoot;
     }
 }
